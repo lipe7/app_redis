@@ -7,6 +7,7 @@ use App\Http\Requests\StoreNoticiaRequest;
 use App\Http\Requests\UpdateNoticiaRequest;
 use App\Services\NoticiaService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class NoticiaController extends Controller
 {
@@ -25,8 +26,14 @@ class NoticiaController extends Controller
     }
 
     public function index(Request $request)
-    {
-        $noticias = $this->noticia_service->index($request);
+    { 
+        $noticias = [];
+
+        Cache::has('primeiras_noticias')
+            ? $noticias =Cache::get('primeiras_noticias') 
+            : 
+                $noticias = $this->noticia_service->index($request);
+                Cache::put('primeiras_noticias', $noticias, 15);
 
         return view('noticia', compact('noticias'));
     }
