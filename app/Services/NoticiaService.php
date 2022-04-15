@@ -13,7 +13,7 @@ class NoticiaService
         $this->noticia_repository = $noticia_repository;
     }
 
-    public function index($request)
+    public function index()
     {
         return $this->noticia_repository->index();
     }
