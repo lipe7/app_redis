@@ -8,6 +8,8 @@ class NoticiaRepository
 {
     public function index()
     {
-        
+        return Noticia::orderByDesc('created_at')
+            ->limit(10)
+            ->get();
     }
 }

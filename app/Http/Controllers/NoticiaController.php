@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Noticia;
 use App\Http\Requests\StoreNoticiaRequest;
 use App\Http\Requests\UpdateNoticiaRequest;
+use App\Services\NoticiaService;
+use Illuminate\Http\Request;
 
 class NoticiaController extends Controller
 {
@@ -13,9 +15,20 @@ class NoticiaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    protected NoticiaService $noticia_service;
+
+
+    public function __construct(NoticiaService $noticia_service)
     {
-        //
+        $this->noticia_service = $noticia_service;
+    }
+
+    public function index(Request $request)
+    {
+        $noticias = $this->noticia_service->index($request);
+
+        return view('noticia', compact('noticias'));
     }
 
     /**
